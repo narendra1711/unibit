@@ -1,0 +1,89 @@
+{% extends "base.html" %}
+
+{% block menubar %}
+
+<nav role="navigation" class="main-nav" aria-labelledby="block-mainnavigation-2-menu" id="block-mainnavigation-2" data-block-plugin-id="menu_block_current_language:main">
+            
+	<h2 class="visually-hidden" id="block-mainnavigation-2-menu">Main navigation</h2>
+	
+  
+		  
+					  <ul block="block-mainnavigation-2" class="menu-level-0">
+						<li>
+							<a href="dashboard" class="trigger">Dashboard</a>
+						</li>
+			<li>
+				  <a href="business_checks" class="trigger">Business Checks</a>
+				   
+				</li>
+			<li>
+				  <a href="data_checks" class="trigger" data-drupal-link-system-path="node/1001">Data Checks</a>
+					
+				</li>
+			<li>
+				  <a href="logs" class="trigger" rel="noreferrer">Log Monitoring</a>
+				   
+				</li>
+			
+			<li>
+				  <a href="onboard" class="trigger">On-Boarding</a>
+				   
+				</li>
+			<li>
+				<a href="{{url_for('index')}}" class="trigger">Sign Out</a>
+				   
+				</li>
+		  </ul> 
+  
+	</nav>
+{% endblock %}
+
+{% block content %}
+
+	<h1>On-Board</h1>      
+	<form id="newsletterform">
+			<input type="text" class="form-control" name="use_case_name" id="use_case_name" placeholder="Use Case Name">
+			<input type="text" class="form-control" name="use_case_admin" id="use_case_admin" placeholder="Use Case Admin">
+			<textarea type="text" name="desc" id="desc" placeholder="Description"></textarea>
+			<button id="submit" name="submit" type="submit" class="btn btn-primary">Submit</button> 
+			
+	</form>
+	  		
+{% endblock %}
+
+{% block scripts %}
+
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+
+<script>
+	$(document).ready(function() {
+		$('form').on('submit', function(event) {
+		$.ajax({
+			data : {
+				use_case_name : $('#use_case_name').val(),
+				use_case_admin: $('#use_case_admin').val(),
+				desc : $('#desc').val()				
+					},
+				type : 'POST',
+				url : '/user_onboard'
+				})
+			.done(function(data) {
+				$( '#newsletterform' ).each(function(){
+					this.reset();
+				});
+				alert("Data Submitted")
+			$('#output').text(data.output).show();
+		});
+		event.preventDefault();
+		});
+	});
+</script>
+
+<script>
+	$(document).ready(function(){
+		$(".reset-btn").click(function(){
+			$("#myForm").trigger("reset");
+		});
+	});
+	</script>
+{% endblock %}

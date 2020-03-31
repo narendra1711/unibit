@@ -1,0 +1,50 @@
+{% extends "base.html" %}
+
+{% block menubar %}
+
+<nav role="navigation" class="main-nav" aria-labelledby="block-mainnavigation-2-menu" id="block-mainnavigation-2" data-block-plugin-id="menu_block_current_language:main">
+            
+	<h2 class="visually-hidden" id="block-mainnavigation-2-menu">Main navigation</h2>
+	
+  
+		  
+					  <ul block="block-mainnavigation-2" class="menu-level-0">
+						<li>
+							<a href="dashboard" class="trigger">Dashboard</a>
+						</li>
+			<li>
+				  <a href="business_checks" class="trigger">Business Checks</a>
+				   
+				</li>
+			<li>
+				  <a href="data_checks" class="trigger" data-drupal-link-system-path="node/1001">Data Checks</a>
+					
+				</li>
+			<li>
+				  <a href="logs" class="trigger" rel="noreferrer">Log Monitoring</a>
+				   
+				</li>
+			
+			<li>
+				  <a href="onboard" class="trigger">On-Boarding</a>
+				   
+				</li>
+			<li>
+				<a href="{{url_for('index')}}" class="trigger">Sign Out</a>
+				   
+				</li>
+		  </ul>
+	
+  
+  
+	</nav>
+{% endblock %}
+
+{% block content %}
+
+	<h1>Dashboard</h1>      
+	<form action="{{ url_for('dashboard') }}" method="post">
+		<img src="{{url_for('static', filename='work_in_progress.jpg')}}" /></img>
+	</form>
+		
+{% endblock %}

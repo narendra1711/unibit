@@ -1,0 +1,143 @@
+{% extends "base.html" %}
+
+{% block menubar %}
+
+<nav role="navigation" class="main-nav" aria-labelledby="block-mainnavigation-2-menu" id="block-mainnavigation-2" data-block-plugin-id="menu_block_current_language:main">
+            
+	<h2 class="visually-hidden" id="block-mainnavigation-2-menu">Main navigation</h2>
+	
+  
+		  
+					  <ul block="block-mainnavigation-2" class="menu-level-0">
+						<li>
+							<a href="dashboard" class="trigger">Dashboard</a>
+						</li>
+			<li>
+				  <a href="business_checks" class="trigger">Business Checks</a>
+				   
+				</li>
+			<li>
+				  <a href="data_checks" class="trigger" data-drupal-link-system-path="node/1001">Data Checks</a>
+					
+				</li>
+			<li>
+				  <a href="logs" class="trigger" rel="noreferrer">Log Monitoring</a>
+				   
+				</li>
+			
+			<li>
+				  <a href="onboard" class="trigger">On-Boarding</a>
+				   
+				</li>
+			<li>
+				  <a href="{{url_for('index')}}" class="trigger">Sign Out</a>
+				   
+				</li>
+		  </ul>
+	
+  
+  
+	</nav>
+{% endblock %}
+{% block content %}
+
+	<h1>Data API</h1>     
+	
+	<div class="btn-group">
+		<button type="button" class="btn btn-danger dropdown-toggle" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+		Select DB
+		</button>
+		<div class="dropdown-menu">
+		<a class="dropdown-item" href="#">dev_1</a>
+		<a class="dropdown-item" href="#">dev_2</a>
+		<div class="dropdown-divider"></div>
+		<a class="dropdown-item" href="#">qa_1</a>
+		<a class="dropdown-item" href="#">qa_2</a>
+		</div>
+	</div>
+	<br>
+	<div class="form-group">
+		<br>
+		<textarea class="form-control" rows="5" cols="5" id="query"></textarea>
+		<label for="comment"><h4>Enter Query Below</h4></label>
+	</div>
+
+	<div class="container">
+		<div class="panel">
+			<button id="loadData" class="btn btn-primary">Run Query</button>
+		  <table id="example" class="table table-striped table-bordered" style="width:100%">
+			<thead>
+			  <tr>
+				<th>Job ID</th>
+                <th>Job Name</th>
+                <th>Status</th>
+                <th>Start Datetime</th>
+                <th>End Datetime</th>
+				<th>Last Updated</th>
+				<th>Error</th>
+			  </tr>
+			</thead>
+		  </table>
+		</div>
+	  </div>
+		
+{% endblock %}
+
+{% block scripts %}
+<link rel="stylesheet" media="all" href="./static/css_datatable.css">
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/twitter-bootstrap/4.1.3/css/bootstrap.css"/>
+<link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/1.10.20/css/dataTables.bootstrap4.min.css"/>
+<script src="https://code.jquery.com/jquery-3.3.1.js"></script>
+<script src="https://cdn.datatables.net/1.10.18/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/1.10.20/js/dataTables.bootstrap4.min.js"></script>
+<script>
+	$(function() {
+	$("#example").DataTable();
+
+	$("#loadData").click(function() {
+		loadData();
+	});
+
+	function loadData() {
+		$.ajax({
+		type: 'GET',
+		url: '/user_data_api',
+		contentType: "text/plain",
+		dataType: 'json',
+		success: function (data) {
+			myJsonData = data;
+			populateDataTable(myJsonData);
+		},
+		error: function (e) {
+			console.log("There was an error with your request...");
+			console.log("error: " + JSON.stringify(e));
+		}
+		});
+	}
+
+	// populate the data table with JSON data
+	function populateDataTable(data) {
+		console.log("populating data table...");
+		// clear the table before populating it with more data
+		$("#example").DataTable().clear();
+		var length = Object.keys(data.data).length;
+		console.log(length)
+		for(var i = 0; i < length; i++) {
+		var customer = data.data[i];
+
+		// You could also use an ajax property on the data table initialization
+		$('#example').dataTable().fnAddData( [
+			customer.JOB_ID,
+			customer.JOB_NAME,
+			customer.STATUS,
+			customer.START_DATETIME,
+			customer.END_DATETIME,
+			customer.LAST_UPDATED,
+			customer.ERROR
+		]);
+		}
+	}
+	})();
+</script>
+
+{% endblock %}

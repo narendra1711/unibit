@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block content %}
+
+	<h1>Sign-In</h1>      
+	<form action="{{ url_for('validation') }}" method="post">
+	  <div class="form-group">
+		<label for="exampleInputEmail1">Email address</label>
+		<input type="email" class="form-control" name="user_name" id="user_name" aria-describedby="emailHelp" placeholder="Enter email">
+	</div>
+	  <div class="form-group">
+		<label for="exampleInputPassword1">Password</label>
+		<input type="password" class="form-control" name="password" id="password" placeholder="Password">
+	  </div>
+	  
+	  <button type="submit" class="btn btn-primary">Login</button>
+	  <a class="nav-link" href="signup"> <button type="button" id="signup" class="btn btn-primary" >Sign-Up</button> </a>
+	  
+	</form>
+	
+{% endblock %}
